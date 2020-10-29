@@ -18,9 +18,12 @@ abstract class DispatcherBuilder {
 
 typedef RequestDispatcher = FutureOr<Response> Function(Request request);
 
+FutureOr<Response> defaultHandler(Request request) => Future.value(Response.notFound(''));
+
 RequestDispatcher createRequestDispatcher(
   List<DispatcherBuilder> dispatcherBuilders, {
   bool corsEnabled = false,
+  Handler defaultHandler = defaultHandler,
 }) {
   var requestMatcher = asyncMatcher<Request, FutureOr<Response>>();
   if (corsEnabled) {
@@ -28,7 +31,7 @@ RequestDispatcher createRequestDispatcher(
   }
   dispatcherBuilders.forEach((element) => requestMatcher = requestMatcher.appendMatchers(element));
   return (request) async =>
-      await requestMatcher.otherwise((Request request) => Future.value(Response.notFound('')))(request);
+      await requestMatcher.otherwise(defaultHandler)(request);
 }
 
 TransformingPredicate<Request, Future<Pair<Map<String, String>, String>>> matchRequest(
