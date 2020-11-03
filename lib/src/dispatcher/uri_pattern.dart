@@ -22,10 +22,10 @@ class UriPattern {
   }
 
   RegExp _createRegExp(String pattern) => RegExp(r'^' +
-      pattern.replaceAllMapped(RegExp(r'(\*\*)|(:\w+)|([^:*]+)', caseSensitive: false), (Match m) {
+      pattern.replaceAllMapped(RegExp(r'(\*\*)|(:[\w]+)|([^:*]+)', caseSensitive: false), (Match m) {
         if (m[2] != null) {
           _parameters.add(m[2].substring(1));
-          return r'(.+)';
+          return r'(\w+)';
         } else if(m[3] != null) {
           return _quote(m[3]);
         } else {
