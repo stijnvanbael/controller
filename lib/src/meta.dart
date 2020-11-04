@@ -2,6 +2,9 @@ library controller.meta;
 
 const controller = Controller();
 const bodyProperty = BodyProperty();
+const body = Body();
+const validatable = Validatable();
+const required = Required();
 
 class Controller {
   const Controller();
@@ -24,4 +27,16 @@ class HttpRequest {
 
 class BodyProperty {
   const BodyProperty();
+}
+
+class Body {
+  const Body();
+}
+
+class Validatable {
+  const Validatable();
+}
+
+class Required {
+  const Required();
 }
