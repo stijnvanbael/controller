@@ -2,6 +2,7 @@ library controller.meta;
 
 const controller = Controller();
 const bodyProperty = BodyProperty();
+const secured = Secured();
 
 class Controller {
   const Controller();
@@ -24,4 +25,10 @@ class HttpRequest {
 
 class BodyProperty {
   const BodyProperty();
+}
+
+class Secured {
+  final List<String> claims;
+
+  const Secured([this.claims = const []]);
 }
