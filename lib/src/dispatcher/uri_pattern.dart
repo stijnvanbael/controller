@@ -4,6 +4,9 @@ class UriPattern {
   RegExp _regExp;
 
   UriPattern(this.pattern) {
+    if (pattern.contains('?')) {
+      throw 'Pattern "$pattern" shoud not contain query parameters';
+    }
     _regExp = _createRegExp(pattern);
   }
 
@@ -22,18 +25,28 @@ class UriPattern {
   }
 
   RegExp _createRegExp(String pattern) => RegExp(r'^' +
-      pattern.replaceAllMapped(RegExp(r'(\*\*)|(:[\w]+)|([^:*]+)', caseSensitive: false), (Match m) {
+      _normalize(pattern).replaceAllMapped(RegExp(r'(\*\*)|(:[\w]+)|([^:*]+)', caseSensitive: false), (Match m) {
         if (m[2] != null) {
           _parameters.add(m[2].substring(1));
           return r'(\w+)';
-        } else if(m[3] != null) {
+        } else if (m[3] != null) {
           return _quote(m[3]);
         } else {
           return '.*';
         }
       }) +
-      r'$');
+      r'?$');
 
   String _quote(String string) =>
       string.replaceAllMapped(RegExp(r'([.?\\\[\]{\}\-*$^+<>|])|(.)'), (m) => m[1] != null ? r'\' + m[1] : m[2]);
+
+  String _normalize(String pattern) {
+    if (!pattern.startsWith('/')) {
+      pattern = '/$pattern';
+    }
+    if (!pattern.endsWith('/')) {
+      pattern = '$pattern/';
+    }
+    return pattern;
+  }
 }
