@@ -20,6 +20,7 @@ class RequiredError extends ValidationError {
   @override
   String toString() => 'A value for $propertyName is required.';
 
+  @override
   Map<String, dynamic> toJson() => {
         'key': key,
         'propertyName': propertyName,

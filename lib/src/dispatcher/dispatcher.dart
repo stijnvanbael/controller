@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:controller/controller.dart';
 import 'package:shelf/shelf.dart';
 
 import 'pattern_matcher.dart';
@@ -14,6 +17,12 @@ const corsHeaders = {
 abstract class DispatcherBuilder {
   AsyncPatternMatcher<Request, FutureOr<Response>> appendMatchers(
       AsyncPatternMatcher<Request, FutureOr<Response>> requestMatcher);
+
+  List<Map<String, dynamic>> collectErrors(List<List<ValidationError>> errors) =>
+      errors.expand((errors) => errors).map((error) => error.toJson()).toList();
+
+  Response badRequest(List<Map<String, dynamic>> errors) =>
+      Response(HttpStatus.badRequest, body: jsonEncode({'errors': errors}));
 }
 
 typedef RequestDispatcher = FutureOr<Response> Function(Request request);
@@ -30,8 +39,7 @@ RequestDispatcher createRequestDispatcher(
     requestMatcher = requestMatcher.addCorsHeaders();
   }
   dispatcherBuilders.forEach((element) => requestMatcher = requestMatcher.appendMatchers(element));
-  return (request) async =>
-      await requestMatcher.otherwise(defaultHandler)(request);
+  return (request) async => await requestMatcher.otherwise(defaultHandler)(request);
 }
 
 TransformingPredicate<Request, Future<Pair<Map<String, String>, String>>> matchRequest(
