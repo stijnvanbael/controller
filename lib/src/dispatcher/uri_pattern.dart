@@ -1,7 +1,7 @@
 class UriPattern {
   final String pattern;
   final List<String> _parameters = [];
-  RegExp _regExp;
+  RegExp _regExp = RegExp('.*');
 
   UriPattern(this.pattern) {
     if (pattern.contains('?')) {
@@ -12,25 +12,27 @@ class UriPattern {
 
   bool matches(String string) => _regExp.hasMatch(string);
 
-  Map<String, String> parse(String string) {
+  Map<String, String>? parse(String string) {
     var match = _regExp.firstMatch(string);
     if (match == null) {
       return null;
     }
     var result = <String, String>{};
     _parameters.forEach((param) {
-      result[param] = match[_parameters.indexOf(param) + 1];
+      result[param] = match[_parameters.indexOf(param) + 1] as String;
     });
     return result;
   }
 
   RegExp _createRegExp(String pattern) => RegExp(r'^' +
       _normalize(pattern).replaceAllMapped(RegExp(r'(\*\*)|(:[\w]+)|([^:*]+)', caseSensitive: false), (Match m) {
-        if (m[2] != null) {
-          _parameters.add(m[2].substring(1));
+        var parameterName = m[2];
+        var intermediate = m[3];
+        if (parameterName != null) {
+          _parameters.add(parameterName.substring(1));
           return r'(\w+)';
-        } else if (m[3] != null) {
-          return _quote(m[3]);
+        } else if (intermediate != null) {
+          return _quote(intermediate);
         } else {
           return '.*';
         }
