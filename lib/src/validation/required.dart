@@ -1,6 +1,6 @@
 import 'common.dart';
 
-class RequiredValidator implements PropertyValidator {
+class RequiredValidator extends PropertyValidator {
   static final RequiredValidator instance = RequiredValidator();
 
   @override
