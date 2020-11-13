@@ -4,6 +4,8 @@ In progress
 
 Backlog
 -------
+ * [ ] Readme and example
+ * [ ] More test coverage
  * [ ] Separate builder for method validation
  * [ ] Reuse validation code between methods and entities
  * [ ] Toggle CORS (+ override per request)
