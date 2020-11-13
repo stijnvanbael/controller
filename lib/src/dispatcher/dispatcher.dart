@@ -23,7 +23,9 @@ abstract class DispatcherBuilder {
       errors.expand((errors) => errors).map((error) => error.toJson()).toList();
 
   Response badRequest(List<Map<String, dynamic>> errors) =>
-      Response(HttpStatus.badRequest, body: jsonEncode({'errors': errors}));
+      Response(HttpStatus.badRequest,
+          body: jsonEncode({'errors': errors}),
+          headers: {HttpHeaders.contentTypeHeader: ContentType.json.toString()});
 }
 
 typedef RequestDispatcher = FutureOr<Response> Function(Request request);
@@ -61,7 +63,7 @@ Map<String, String> _extractHeaders(Request request, UriPattern pathPattern) {
   var headers = Map<String, String>.from(request.headers);
   pathPattern
       .parse(request.requestedUri.path)
-      .forEach((k, v) => headers[k] = v);
+      ?.forEach((k, v) => headers[k] = v);
   _parseQueryParams(request.requestedUri.query)
       .forEach((k, v) => headers[k] = v);
   return headers;

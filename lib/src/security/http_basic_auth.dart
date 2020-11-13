@@ -33,7 +33,7 @@ class HttpBasicAuthSecurity implements Security {
 }
 
 abstract class IdentityProvider {
-  List<String> getClaims(String username, String password);
+  List<String>/*?*/ getClaims(String username, String password);
 }
 
 class SimpleIdentityProvider implements IdentityProvider {
@@ -42,9 +42,9 @@ class SimpleIdentityProvider implements IdentityProvider {
   SimpleIdentityProvider(this._identities);
 
   @override
-  List<String> getClaims(String username, String password) {
+  List<String>/*?*/ getClaims(String username, String password) {
     var identity = _identities[username];
-    return identity?.password == password ? identity.claims.toList() : null;
+    return identity?.password == password ? identity?.claims?.toList() : null;
   }
 }
 

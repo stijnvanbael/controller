@@ -4,8 +4,6 @@ const controller = Controller();
 const bodyProperty = BodyProperty();
 const secured = Secured();
 const body = Body();
-const validatable = Validatable();
-const required = Required();
 
 class Controller {
   const Controller();
@@ -38,12 +36,4 @@ class Secured {
 
 class Body {
   const Body();
-}
-
-class Validatable {
-  const Validatable();
-}
-
-class Required {
-  const Required();
 }

@@ -1,27 +1,39 @@
+import 'package:controller/controller.dart';
+
 import 'common.dart';
 
-class NumberValidator<N extends num> extends PropertyValidator {
-  static final NumberValidator<int> integer = NumberValidator._(
-      int.parse, (name, value) => NumberError.integer(name, value));
-  static final NumberValidator<double> decimal = NumberValidator._(
-      double.parse, (name, value) => NumberError.decimal(name, value));
-  static final NumberValidator<num> number = NumberValidator._(
-      num.parse, (name, value) => NumberError.number(name, value));
+const NumberValidator<int> integer =
+    NumberValidator._(int.tryParse, _createIntegerError);
 
+const NumberValidator<double> decimal =
+    NumberValidator._(double.tryParse, _createDecimalError);
+
+const NumberValidator<num> number =
+    NumberValidator._(num.tryParse, _createNumberError);
+
+class NumberValidator<N extends num> extends PropertyValidator {
   final N Function(String) _parser;
   final NumberError Function(String, dynamic) _errorBuilder;
 
-  NumberValidator._(this._parser, this._errorBuilder);
+  const NumberValidator._(this._parser, this._errorBuilder);
 
   @override
   List<ValidationError> validateProperty(
       dynamic entity, String propertyName, dynamic propertyValue) {
     if (propertyValue != null && _parser(propertyValue) == null) {
-      return [NumberError.integer(propertyName, propertyValue)];
+      return [_errorBuilder(propertyName, propertyValue)];
     }
     return [];
   }
 }
+
+NumberError _createIntegerError(name, value) =>
+    NumberError.integer(name, value);
+
+NumberError _createDecimalError(name, value) =>
+    NumberError.decimal(name, value);
+
+NumberError _createNumberError(name, value) => NumberError.number(name, value);
 
 class NumberError extends ValidationError {
   final String propertyName;

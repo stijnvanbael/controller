@@ -12,7 +12,7 @@ class UriPattern {
 
   bool matches(String string) => _regExp.hasMatch(string);
 
-  Map<String, String>? parse(String string) {
+  Map<String, String>/*?*/ parse(String string) {
     var match = _regExp.firstMatch(string);
     if (match == null) {
       return null;
@@ -25,7 +25,8 @@ class UriPattern {
   }
 
   RegExp _createRegExp(String pattern) => RegExp(r'^' +
-      _normalize(pattern).replaceAllMapped(RegExp(r'(\*\*)|(:[\w]+)|([^:*]+)', caseSensitive: false), (Match m) {
+      _normalize(pattern).replaceAllMapped(
+          RegExp(r'(\*\*)|(:[\w]+)|([^:*]+)', caseSensitive: false), (Match m) {
         var parameterName = m[2];
         var intermediate = m[3];
         if (parameterName != null) {
@@ -39,8 +40,9 @@ class UriPattern {
       }) +
       r'?$');
 
-  String _quote(String string) =>
-      string.replaceAllMapped(RegExp(r'([.?\\\[\]{\}\-*$^+<>|])|(.)'), (m) => m[1] != null ? r'\' + m[1] : m[2]);
+  String _quote(String string) => string.replaceAllMapped(
+      RegExp(r'([.?\\\[\]{\}\-*$^+<>|])|(.)'),
+      (m) => m[1] != null ? r'\' + m[1]/*!*/ : m[2]/*!*/);
 
   String _normalize(String pattern) {
     if (!pattern.startsWith('/')) {

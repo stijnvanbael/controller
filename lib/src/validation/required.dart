@@ -1,11 +1,15 @@
 import 'common.dart';
 
-class RequiredValidator extends PropertyValidator {
-  static final RequiredValidator instance = RequiredValidator();
+const required = Required();
+
+class Required extends PropertyValidator {
+  const Required();
 
   @override
-  List<ValidationError> validateProperty(dynamic entity, String propertyName, dynamic propertyValue) {
-    if (propertyValue == null || (propertyValue is String && propertyValue.isEmpty)) {
+  List<ValidationError> validateProperty(
+      dynamic entity, String propertyName, dynamic propertyValue) {
+    if (propertyValue == null ||
+        (propertyValue is String && propertyValue.isEmpty)) {
       return [RequiredError(propertyName)];
     }
     return [];
