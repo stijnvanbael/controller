@@ -10,6 +10,7 @@ class Regex extends PropertyValidator {
   List<ValidationError> validateProperty(
       dynamic entity, String propertyName, propertyValue) {
     if (propertyValue != null &&
+        propertyValue != '' &&
         !RegExp(pattern).hasMatch(propertyValue.toString())) {
       return [RegexError(name, propertyName, propertyValue)];
     }

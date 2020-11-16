@@ -20,7 +20,9 @@ class NumberValidator<N extends num> extends PropertyValidator {
   @override
   List<ValidationError> validateProperty(
       dynamic entity, String propertyName, dynamic propertyValue) {
-    if (propertyValue != null && _parser(propertyValue) == null) {
+    if (propertyValue != null &&
+        propertyValue != '' &&
+        _parser(propertyValue) == null) {
       return [_errorBuilder(propertyName, propertyValue)];
     }
     return [];
