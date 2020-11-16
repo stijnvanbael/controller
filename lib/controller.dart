@@ -9,4 +9,5 @@ export 'src/security/http_basic_auth.dart';
 export 'src/validation/common.dart';
 export 'src/validation/comparison.dart';
 export 'src/validation/number.dart';
+export 'src/validation/regex.dart';
 export 'src/validation/required.dart';

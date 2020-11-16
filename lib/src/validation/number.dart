@@ -47,7 +47,7 @@ class NumberError extends ValidationError {
 
   @override
   String toString() =>
-      'Expected $key value for property $propertyName, but found "$propertyValue"';
+      'Expected $key value for $propertyName, but found "$propertyValue".';
 
   @override
   Map<String, dynamic> toJson() => {
