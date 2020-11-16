@@ -13,7 +13,7 @@ class Regex extends PropertyValidator {
         !RegExp(pattern).hasMatch(propertyValue.toString())) {
       return [RegexError(name, propertyName, propertyValue)];
     }
-    throw UnimplementedError();
+    return [];
   }
 }
 
