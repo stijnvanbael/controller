@@ -27,7 +27,7 @@ class RegexError extends ValidationError {
 
   @override
   String toString() =>
-      'Expected a valid $type for $propertyName , but found "$propertyValue".';
+      'Expected a valid $type for $propertyName, but found "$propertyValue".';
 
   @override
   Map<String, dynamic> toJson() => {

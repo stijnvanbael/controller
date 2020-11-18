@@ -1,3 +1,5 @@
+import 'dart:async';
+
 typedef PropertyGetter<E> = dynamic Function(E entity);
 typedef Expression<C> = C Function();
 
@@ -10,10 +12,11 @@ class Validatable {
 abstract class PropertyValidator {
   const PropertyValidator();
 
-  List<ValidationError> validateProperty(
+  FutureOr<List<ValidationError>> validateProperty(
       dynamic entity, String propertyName, dynamic propertyValue);
 
-  List<ValidationError> validate(String propertyName, dynamic propertyValue) =>
+  FutureOr<List<ValidationError>> validate(
+          String propertyName, dynamic propertyValue) =>
       validateProperty(null, propertyName, propertyValue);
 }
 
@@ -23,12 +26,15 @@ class CompositePropertyValidator extends PropertyValidator {
   const CompositePropertyValidator(this.validators);
 
   @override
-  List<ValidationError> validateProperty(
-          dynamic entity, String propertyName, propertyValue) =>
-      validators
-          .expand((validator) =>
-              validator.validateProperty(entity, propertyName, propertyValue))
-          .toList();
+  FutureOr<List<ValidationError>> validateProperty(
+      dynamic entity, String propertyName, propertyValue) async {
+    var errors = <ValidationError>[];
+    for (var validator in validators) {
+      errors.addAll(await validator.validateProperty(
+          entity, propertyName, propertyValue));
+    }
+    return errors;
+  }
 }
 
 class EntityPropertyValidator extends CompositePropertyValidator {
@@ -40,7 +46,7 @@ class EntityPropertyValidator extends CompositePropertyValidator {
       : super(validators);
 
   @override
-  List<ValidationError> validateProperty(dynamic entity,
+  FutureOr<List<ValidationError>> validateProperty(dynamic entity,
           [String /*?*/ parentProperty, dynamic /*?*/ propertyValue]) =>
       super.validateProperty(
           entity,
@@ -56,16 +62,23 @@ class EntityValidator extends PropertyValidator {
   EntityValidator(this.propertyValidators);
 
   @override
-  List<ValidationError> validateProperty(
-          dynamic entity, String propertyName, dynamic propertyValue) =>
-      propertyValidators
-          .expand((validator) =>
-              validator.validateProperty(propertyValue, propertyName))
-          .toList();
+  FutureOr<List<ValidationError>> validateProperty(
+      dynamic entity, String propertyName, dynamic propertyValue) async {
+    var errors = <ValidationError>[];
+    for (var validator in propertyValidators) {
+      errors.addAll(
+          await validator.validateProperty(propertyValue, propertyName));
+    }
+    return errors;
+  }
 
-  List<ValidationError> validateEntity(dynamic entity) => propertyValidators
-      .expand((validator) => validator.validateProperty(entity))
-      .toList();
+  FutureOr<List<ValidationError>> validateEntity(dynamic entity) async {
+    var errors = <ValidationError>[];
+    for (var validator in propertyValidators) {
+      errors.addAll(await validator.validateProperty(entity));
+    }
+    return errors;
+  }
 }
 
 class ValidationError {
