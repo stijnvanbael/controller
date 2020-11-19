@@ -17,6 +17,22 @@ class Post extends HttpRequest {
   const Post(String path) : super('POST', path);
 }
 
+class Put extends HttpRequest {
+  const Put(String path) : super('PUT', path);
+}
+
+class Delete extends HttpRequest {
+  const Delete(String path) : super('DELETE', path);
+}
+
+class Head extends HttpRequest {
+  const Head(String path) : super('HEAD', path);
+}
+
+class Patch extends HttpRequest {
+  const Patch(String path) : super('PATCH', path);
+}
+
 class HttpRequest {
   final String method;
   final String path;
