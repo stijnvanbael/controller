@@ -8,7 +8,7 @@ bool always(dynamic entity) => true;
 class Required extends PropertyValidator {
   final Predicate when;
 
-  const Required([this.when = always]);
+  const Required({this.when = always});
 
   @override
   List<ValidationError> validateProperty(
