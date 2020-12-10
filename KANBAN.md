@@ -4,12 +4,13 @@ In progress
 
 Backlog
 -------
+ * [ ] Polymorhic validation
  * [ ] Readme and example
  * [ ] More test coverage
  * [ ] Separate builder for method validation
  * [ ] Reuse validation code between methods and entities
  * [ ] Toggle CORS (+ override per request)
- * [ ] Use json_annotation
+ * [ ] Use json_annotation to generate fromJson
  * [ ] Null safety
  
 Done

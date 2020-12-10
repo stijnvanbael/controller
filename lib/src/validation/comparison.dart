@@ -13,13 +13,13 @@ class Min<C extends Comparable> extends PropertyValidator {
 
   const Min(this._value, {this.inclusive = true}) : _expression = null;
 
-  C _evaluate() => _value ?? _expression /*!*/ ();
+  C _evaluate(dynamic entity) => _value ?? _expression /*!*/ (entity);
 
   @override
   List<ValidationError> validateProperty(
       dynamic entity, String propertyName, dynamic propertyValue) {
     var convertedValue = convert<C>(propertyValue);
-    var value = _evaluate();
+    var value = _evaluate(entity);
     if (convertedValue != null &&
         (inclusive ? convertedValue < value : convertedValue <= value)) {
       return [
@@ -46,13 +46,13 @@ class Max<C extends Comparable> extends PropertyValidator {
 
   const Max(this._value, {this.inclusive = true}) : _expression = null;
 
-  C _evaluate() => _value ?? _expression /*!*/ ();
+  C _evaluate(dynamic entity) => _value ?? _expression /*!*/ (entity);
 
   @override
   List<ValidationError> validateProperty(
       dynamic entity, String propertyName, dynamic propertyValue) {
     var convertedValue = convert<C>(propertyValue);
-    var value = _evaluate();
+    var value = _evaluate(entity);
     if (convertedValue != null &&
         (inclusive ? convertedValue > value : convertedValue >= value)) {
       return [

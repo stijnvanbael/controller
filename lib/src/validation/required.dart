@@ -1,15 +1,21 @@
+import '../../controller.dart';
 import 'common.dart';
 
 const required = Required();
 
+bool always(dynamic entity) => true;
+
 class Required extends PropertyValidator {
-  const Required();
+  final Predicate when;
+
+  const Required([this.when = always]);
 
   @override
   List<ValidationError> validateProperty(
       dynamic entity, String propertyName, dynamic propertyValue) {
-    if (propertyValue == null ||
-        (propertyValue is String && propertyValue.isEmpty)) {
+    if (when(entity) &&
+        (propertyValue == null ||
+            (propertyValue is String && propertyValue.isEmpty))) {
       return [RequiredError(propertyName)];
     }
     return [];

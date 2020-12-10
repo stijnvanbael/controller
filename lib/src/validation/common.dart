@@ -1,7 +1,7 @@
 import 'dart:async';
 
 typedef PropertyGetter<E> = dynamic Function(E entity);
-typedef Expression<C> = C Function();
+typedef Expression<C> = C Function(dynamic entity);
 
 const validatable = Validatable();
 
