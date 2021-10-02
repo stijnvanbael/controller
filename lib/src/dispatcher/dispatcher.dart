@@ -74,7 +74,7 @@ final RegExp queryRegexp = RegExp(r'(\w+)=([^&]+)');
 Map<String, String> _parseQueryParams(String query) {
   var params = <String, String>{};
   queryRegexp.allMatches(query).forEach(
-      (match) => params[match.group(1) as String] = match.group(2) as String);
+      (match) => params[match.group(1)!] = match.group(2)!);
   return params;
 }
 

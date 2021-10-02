@@ -2,7 +2,7 @@ import 'common.dart';
 
 class Length extends PropertyValidator {
   final int min;
-  final int max;
+  final int? max;
 
   const Length({this.min = 0, this.max});
 
@@ -26,7 +26,7 @@ class Length extends PropertyValidator {
   List<ValidationError> _validateString(
       String propertyValue, String propertyName) {
     if (propertyValue.length < min ||
-        (max != null && propertyValue.length > max)) {
+        (max != null && propertyValue.length > max!)) {
       return [LengthError(propertyName, min, max, propertyValue.length)];
     }
     return [];
@@ -35,7 +35,7 @@ class Length extends PropertyValidator {
   List<ValidationError> _validateIterable(
       Iterable propertyValue, String propertyName) {
     if (propertyValue.length < min ||
-        (max != null && propertyValue.length > max)) {
+        (max != null && propertyValue.length > max!)) {
       return [LengthError(propertyName, min, max, propertyValue.length)];
     }
     return [];
@@ -43,7 +43,7 @@ class Length extends PropertyValidator {
 
   List<ValidationError> _validateMap(Map propertyValue, String propertyName) {
     if (propertyValue.length < min ||
-        (max != null && propertyValue.length > max)) {
+        (max != null && propertyValue.length > max!)) {
       return [LengthError(propertyName, min, max, propertyValue.length)];
     }
     return [];
@@ -53,7 +53,7 @@ class Length extends PropertyValidator {
 class LengthError extends ValidationError {
   final String propertyName;
   final int min;
-  final int max;
+  final int? max;
   final int actual;
 
   LengthError(this.propertyName, this.min, this.max, this.actual)

@@ -1,4 +1,4 @@
-T convert<T>(dynamic value) {
+T? convert<T>(dynamic value) {
   if (value is T) {
     return value;
   }

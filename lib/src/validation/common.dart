@@ -47,7 +47,7 @@ class EntityPropertyValidator extends CompositePropertyValidator {
 
   @override
   FutureOr<List<ValidationError>> validateProperty(dynamic entity,
-          [String /*?*/ parentProperty, dynamic /*?*/ propertyValue]) =>
+          [String? parentProperty, dynamic propertyValue]) =>
       super.validateProperty(
           entity,
           parentProperty != null

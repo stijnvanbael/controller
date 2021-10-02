@@ -4,8 +4,8 @@ var _minimum = 'minimum';
 var _maximum = 'maximum';
 
 class Min<C extends Comparable> extends PropertyValidator {
-  final Expression<C> /*?*/ _expression;
-  final C /*?*/ _value;
+  final Expression<C>? _expression;
+  final C? _value;
   final bool inclusive;
 
   const Min.expression(this._expression, {this.inclusive = true})
@@ -13,7 +13,7 @@ class Min<C extends Comparable> extends PropertyValidator {
 
   const Min(this._value, {this.inclusive = true}) : _expression = null;
 
-  C _evaluate(dynamic entity) => _value ?? _expression /*!*/ (entity);
+  C _evaluate(dynamic entity) => _value ?? _expression! (entity);
 
   @override
   List<ValidationError> validateProperty(
@@ -37,8 +37,8 @@ class Min<C extends Comparable> extends PropertyValidator {
 }
 
 class Max<C extends Comparable> extends PropertyValidator {
-  final Expression<C> /*?*/ _expression;
-  final C /*?*/ _value;
+  final Expression<C>? _expression;
+  final C? _value;
   final bool inclusive;
 
   const Max.expression(this._expression, {this.inclusive = true})
@@ -46,7 +46,7 @@ class Max<C extends Comparable> extends PropertyValidator {
 
   const Max(this._value, {this.inclusive = true}) : _expression = null;
 
-  C _evaluate(dynamic entity) => _value ?? _expression /*!*/ (entity);
+  C _evaluate(dynamic entity) => _value ?? _expression! (entity);
 
   @override
   List<ValidationError> validateProperty(
@@ -76,11 +76,11 @@ class ComparisonError extends ValidationError {
   final bool inclusive;
 
   ComparisonError({
-    String key,
-    this.propertyName,
-    this.propertyValue,
-    this.limit,
-    this.inclusive,
+    required String key,
+    required this.propertyName,
+    required this.propertyValue,
+    required this.limit,
+    required this.inclusive,
   }) : super(key);
 
   @override

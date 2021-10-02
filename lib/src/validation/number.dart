@@ -12,7 +12,7 @@ const NumberValidator<num> number =
     NumberValidator._(num.tryParse, _createNumberError);
 
 class NumberValidator<N extends num> extends PropertyValidator {
-  final N Function(String) _parser;
+  final N? Function(String) _parser;
   final NumberError Function(String, dynamic) _errorBuilder;
 
   const NumberValidator._(this._parser, this._errorBuilder);

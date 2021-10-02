@@ -12,14 +12,14 @@ class UriPattern {
 
   bool matches(String string) => _regExp.hasMatch(string);
 
-  Map<String, String> /*?*/ parse(String string) {
+  Map<String, String>? parse(String string) {
     var match = _regExp.firstMatch(string);
     if (match == null) {
       return null;
     }
     var result = <String, String>{};
     _parameters.forEach((param) {
-      result[param] = match[_parameters.indexOf(param) + 1];
+      result[param] = match[_parameters.indexOf(param) + 1]!;
     });
     return result;
   }
@@ -42,7 +42,7 @@ class UriPattern {
 
   String _quote(String string) => string.replaceAllMapped(
       RegExp(r'([.?\\\[\]{\}\-*$^+<>|])|(.)'),
-      (m) => m[1] != null ? r'\' + m[1] /*!*/ : m[2] /*!*/);
+      (m) => m[1] != null ? r'\' + m[1]! : m[2]!);
 
   String _normalize(String pattern) {
     if (!pattern.startsWith('/')) {
