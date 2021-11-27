@@ -87,4 +87,7 @@ class ValidationError {
   ValidationError(this.key);
 
   Map<String, dynamic> toJson() => {'key': key};
+
+  @override
+  String toString() => key;
 }
