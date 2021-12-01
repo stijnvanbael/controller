@@ -1,6 +1,6 @@
 In progress
 -----------
- * [ ] Generate response (status code, headers)
+ * [ ] Null safety (required validator)
 
 Backlog
 -------
@@ -11,7 +11,6 @@ Backlog
  * [ ] Reuse validation code between methods and entities
  * [ ] Toggle CORS (+ override per request)
  * [ ] Use json_annotation to generate fromJson
- * [ ] Null safety
  
 Done
 ----
@@ -22,3 +21,4 @@ Done
  * [x] Min/max validation
  * [x] Composite validators
  * [x] Join validator and meta
+ * [x] Generate response (status code, headers)
