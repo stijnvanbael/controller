@@ -9,21 +9,25 @@ class Validatable {
   const Validatable();
 }
 
-abstract class PropertyValidator {
-  const PropertyValidator();
+abstract class Validator {
+  const Validator();
 
   FutureOr<List<ValidationError>> validateProperty(
       dynamic entity, String propertyName, dynamic propertyValue);
+
+  FutureOr<List<ValidationError>> validateJson(
+          dynamic document, String propertyName, dynamic jsonValue) =>
+      [];
 
   FutureOr<List<ValidationError>> validate(
           String propertyName, dynamic propertyValue) =>
       validateProperty(null, propertyName, propertyValue);
 }
 
-class CompositePropertyValidator extends PropertyValidator {
-  final List<PropertyValidator> validators;
+class CompositeValidator extends Validator {
+  final List<Validator> validators;
 
-  const CompositePropertyValidator(this.validators);
+  const CompositeValidator(this.validators);
 
   @override
   FutureOr<List<ValidationError>> validateProperty(
@@ -35,15 +39,28 @@ class CompositePropertyValidator extends PropertyValidator {
     }
     return errors;
   }
+
+  @override
+  FutureOr<List<ValidationError>> validateJson(
+      dynamic entity, String propertyName, jsonValue) async {
+    var errors = <ValidationError>[];
+    for (var validator in validators) {
+      errors.addAll(
+          await validator.validateJson(entity, propertyName, jsonValue));
+    }
+    return errors;
+  }
 }
 
-class EntityPropertyValidator extends CompositePropertyValidator {
+class PropertyValidator extends CompositeValidator {
   final String propertyName;
-  final PropertyGetter getter;
+  final PropertyGetter propertyGetter;
 
-  EntityPropertyValidator(
-      this.propertyName, List<PropertyValidator> validators, this.getter)
-      : super(validators);
+  PropertyValidator(
+    this.propertyName,
+    List<Validator> validators,
+    this.propertyGetter,
+  ) : super(validators);
 
   @override
   FutureOr<List<ValidationError>> validateProperty(dynamic entity,
@@ -53,11 +70,21 @@ class EntityPropertyValidator extends CompositePropertyValidator {
           parentProperty != null
               ? '$parentProperty.$propertyName'
               : propertyName,
-          getter(entity));
+          propertyGetter(entity));
+
+  @override
+  FutureOr<List<ValidationError>> validateJson(dynamic document,
+          [String? parentProperty, dynamic jsonValue]) =>
+      super.validateJson(
+          document,
+          parentProperty != null
+              ? '$parentProperty.$propertyName'
+              : propertyName,
+          document[propertyName]);
 }
 
-class EntityValidator extends PropertyValidator {
-  final List<EntityPropertyValidator> propertyValidators;
+class EntityValidator extends Validator {
+  final List<PropertyValidator> propertyValidators;
 
   EntityValidator(this.propertyValidators);
 
@@ -76,6 +103,24 @@ class EntityValidator extends PropertyValidator {
     var errors = <ValidationError>[];
     for (var validator in propertyValidators) {
       errors.addAll(await validator.validateProperty(entity));
+    }
+    return errors;
+  }
+
+  @override
+  FutureOr<List<ValidationError>> validateJson(
+      dynamic entity, String propertyName, dynamic jsonValue) async {
+    var errors = <ValidationError>[];
+    for (var validator in propertyValidators) {
+      errors.addAll(await validator.validateJson(jsonValue, propertyName));
+    }
+    return errors;
+  }
+
+  FutureOr<List<ValidationError>> validateDocument(dynamic document) async {
+    var errors = <ValidationError>[];
+    for (var validator in propertyValidators) {
+      errors.addAll(await validator.validateJson(document));
     }
     return errors;
   }

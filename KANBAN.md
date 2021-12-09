@@ -1,9 +1,9 @@
 In progress
 -----------
- * [ ] Null safety (required validator)
 
 Backlog
 -------
+ * [ ] Validation in collections
  * [ ] Polymorhic validation
  * [ ] Readme and example
  * [ ] More test coverage
@@ -22,3 +22,4 @@ Done
  * [x] Composite validators
  * [x] Join validator and meta
  * [x] Generate response (status code, headers)
+ * [x] Null safety (required validator)

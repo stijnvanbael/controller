@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../controller.dart';
 import 'common.dart';
 
@@ -5,17 +7,23 @@ const required = Required();
 
 bool always(dynamic entity) => true;
 
-class Required extends PropertyValidator {
-  final Predicate when;
-
-  const Required({this.when = always});
+class Required extends Validator {
+  const Required();
 
   @override
   List<ValidationError> validateProperty(
       dynamic entity, String propertyName, dynamic propertyValue) {
-    if (when(entity) &&
-        (propertyValue == null ||
-            (propertyValue is String && propertyValue.isEmpty))) {
+    if (propertyValue == null ||
+        (propertyValue is String && propertyValue.isEmpty)) {
+      return [RequiredError(propertyName)];
+    }
+    return [];
+  }
+
+  @override
+  FutureOr<List<ValidationError>> validateJson(
+      entity, String propertyName, dynamic jsonValue) {
+    if (jsonValue == null || (jsonValue is String && jsonValue.isEmpty)) {
       return [RequiredError(propertyName)];
     }
     return [];

@@ -1,6 +1,6 @@
 import '../../controller.dart';
 
-class Regex extends PropertyValidator {
+class Regex extends Validator {
   final String pattern;
   final String name;
 
