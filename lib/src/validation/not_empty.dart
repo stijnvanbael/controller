@@ -3,18 +3,19 @@ import 'dart:async';
 import '../../controller.dart';
 import 'common.dart';
 
-const required = Required();
+const notEmpty = NotEmpty();
 
 bool always(dynamic entity) => true;
 
-class Required extends Validator {
-  const Required();
+class NotEmpty extends Validator {
+  const NotEmpty();
 
   @override
   List<ValidationError> validateProperty(
       dynamic entity, String propertyName, dynamic propertyValue) {
-    if (propertyValue == null) {
-      return [RequiredError(propertyName)];
+    if (propertyValue != null &&
+        (propertyValue is String && propertyValue.isEmpty)) {
+      return [NotEmptyError(propertyName)];
     }
     return [];
   }
@@ -22,20 +23,20 @@ class Required extends Validator {
   @override
   FutureOr<List<ValidationError>> validateJson(
       entity, String propertyName, dynamic jsonValue) {
-    if (jsonValue == null) {
-      return [RequiredError(propertyName)];
+    if (jsonValue != null && (jsonValue is String && jsonValue.isEmpty)) {
+      return [NotEmptyError(propertyName)];
     }
     return [];
   }
 }
 
-class RequiredError extends ValidationError {
+class NotEmptyError extends ValidationError {
   final String propertyName;
 
-  RequiredError(this.propertyName) : super('required');
+  NotEmptyError(this.propertyName) : super('notEmpty');
 
   @override
-  String toString() => 'A value for $propertyName is cannot be null.';
+  String toString() => 'A value for $propertyName is cannot be empty.';
 
   @override
   Map<String, dynamic> toJson() => {

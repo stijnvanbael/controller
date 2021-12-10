@@ -1,5 +1,6 @@
 In progress
 -----------
+ * [ ] Implicit validation for valid JSON
 
 Backlog
 -------
@@ -23,3 +24,5 @@ Done
  * [x] Join validator and meta
  * [x] Generate response (status code, headers)
  * [x] Null safety (required validator)
+ * [x] Implicit required from not null
+ * [x] Not empty

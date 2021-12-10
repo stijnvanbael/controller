@@ -80,7 +80,7 @@ class PropertyValidator extends CompositeValidator {
           parentProperty != null
               ? '$parentProperty.$propertyName'
               : propertyName,
-          document[propertyName]);
+          document?[propertyName]);
 }
 
 class EntityValidator extends Validator {

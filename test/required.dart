@@ -7,8 +7,8 @@ import 'package:test/test.dart';
 part 'required.g.dart';
 
 void main() {
-  group('Required validation', () {
-    test('should succeed when not null', () async {
+  group('Required body property', () {
+    test('should succeed when field is not null', () async {
       var result = await CommandWithRequired$Validator.instance.validateEntity(
         CommandWithRequired(
           requiredField: 'something',
@@ -18,17 +18,7 @@ void main() {
       expect(result.length, 0);
     });
 
-    test('should fail when empty String', () async {
-      var result = await CommandWithRequired$Validator.instance.validateEntity(
-        CommandWithRequired(
-          requiredField: '',
-          nestedField: NestedWithRequired(requiredField: ''),
-        ),
-      );
-      expect(result.length, 2);
-    });
-
-    test('should fail when null', () async {
+    test('should fail when field is null', () async {
       var result =
           await CommandWithRequired$Validator.instance.validateDocument(
         {
@@ -41,29 +31,62 @@ void main() {
       expect(result.length, 2);
     });
   });
+
+  group('Required controller parameter', () {
+    var requestDispatcher = createRequestDispatcher([
+      RequiredController$DispatcherBuilder(RequiredController()),
+    ]);
+
+    test('should succeed when body is not null', () async {
+      var response = await requestDispatcher(Request(
+        'POST',
+        Uri.parse('https://test.dev/required-body'),
+        body: '''
+          {
+            "requiredField": "something",
+            "nestedField": {
+              "requiredField": "something"
+            }
+          }
+          ''',
+      ));
+      expect(response.statusCode, 200);
+    });
+
+    test('should fail when body is null', () async {
+      var response = await requestDispatcher(Request(
+        'POST',
+        Uri.parse('https://test.dev/required-body'),
+        body: null,
+      ));
+      expect(response.statusCode, 400);
+    });
+  });
 }
 
 @controller
 class RequiredController {
-  @Post('/required')
-  Future<Response> required(@body CommandWithRequired command) =>
+  @Post('/required-body')
+  Future<Response> requiredBody(@body CommandWithRequired command) =>
       Future.value(Response.ok('OK'));
 }
 
 @validatable
 class CommandWithRequired {
-  @required
   final String requiredField;
+  final String? optionalField;
   final NestedWithRequired? nestedField;
 
   CommandWithRequired({
     required this.requiredField,
+    this.optionalField,
     this.nestedField,
   });
 
   CommandWithRequired.fromJson(Map<String, dynamic> json)
       : this(
           requiredField: json['requiredField'],
+          optionalField: json['optionalField'],
           nestedField: json['nestedField'] != null
               ? NestedWithRequired.fromJson(json['nestedField'])
               : null,
@@ -72,13 +95,17 @@ class CommandWithRequired {
 
 @validatable
 class NestedWithRequired {
-  @required
   final String requiredField;
+  final String? optionalField;
 
   NestedWithRequired({
     required this.requiredField,
+    this.optionalField,
   });
 
   NestedWithRequired.fromJson(Map<String, dynamic> json)
-      : this(requiredField: json['requiredField']);
+      : this(
+          requiredField: json['requiredField'],
+          optionalField: json['optionalField'],
+        );
 }
