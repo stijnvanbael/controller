@@ -1,19 +1,25 @@
 import 'dart:async';
+import 'dart:convert';
 
 import '../../controller.dart';
 import 'common.dart';
 
-const notEmpty = NotEmpty();
+const validJson = ValidJson();
 
-class NotEmpty extends Validator {
-  const NotEmpty();
+class ValidJson extends Validator {
+  const ValidJson();
 
   @override
   List<ValidationError> validateProperty(
       dynamic entity, String propertyName, dynamic propertyValue) {
     if (propertyValue != null &&
-        (propertyValue is String && propertyValue.isEmpty)) {
-      return [NotEmptyError(propertyName)];
+        propertyValue is String &&
+        propertyValue.isNotEmpty) {
+      try {
+        jsonDecode(propertyValue);
+      } on FormatException catch (e) {
+        return [ValidJsonError(propertyName, e.message)];
+      }
     }
     return [];
   }
@@ -21,20 +27,18 @@ class NotEmpty extends Validator {
   @override
   FutureOr<List<ValidationError>> validateJson(
       entity, String propertyName, dynamic jsonValue) {
-    if (jsonValue != null && (jsonValue is String && jsonValue.isEmpty)) {
-      return [NotEmptyError(propertyName)];
-    }
     return [];
   }
 }
 
-class NotEmptyError extends ValidationError {
+class ValidJsonError extends ValidationError {
   final String propertyName;
+  final String message;
 
-  NotEmptyError(this.propertyName) : super('notEmpty');
+  ValidJsonError(this.propertyName, this.message) : super('validJson');
 
   @override
-  String toString() => 'A value for $propertyName is cannot be empty.';
+  String toString() => 'Invalid JSON in $propertyName ($message).';
 
   @override
   Map<String, dynamic> toJson() => {

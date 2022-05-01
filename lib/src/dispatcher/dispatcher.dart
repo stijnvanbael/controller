@@ -22,10 +22,18 @@ abstract class DispatcherBuilder {
           List<List<ValidationError>> errors) =>
       errors.expand((errors) => errors).map((error) => error.toJson()).toList();
 
-  Response badRequest(List<Map<String, dynamic>> errors) =>
-      Response(HttpStatus.badRequest,
-          body: jsonEncode({'errors': errors}),
-          headers: {HttpHeaders.contentTypeHeader: ContentType.json.toString()});
+  Response badRequest(List<Map<String, dynamic>> errors) => Response(
+      HttpStatus.badRequest,
+      body: jsonEncode({'errors': errors}),
+      headers: {HttpHeaders.contentTypeHeader: ContentType.json.toString()});
+
+  dynamic decodeJson(String? json) {
+    try {
+      return json != null && json.isNotEmpty ? jsonDecode(json) : null;
+    } on FormatException {
+      return null;
+    }
+  }
 }
 
 typedef RequestDispatcher = FutureOr<Response> Function(Request request);
@@ -73,8 +81,9 @@ final RegExp queryRegexp = RegExp(r'(\w+)=([^&]+)');
 
 Map<String, String> _parseQueryParams(String query) {
   var params = <String, String>{};
-  queryRegexp.allMatches(query).forEach(
-      (match) => params[match.group(1)!] = match.group(2)!);
+  queryRegexp
+      .allMatches(query)
+      .forEach((match) => params[match.group(1)!] = match.group(2)!);
   return params;
 }
 

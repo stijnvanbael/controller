@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:controller/controller.dart';
 import 'package:shelf/shelf.dart';
 import 'package:test/test.dart';
@@ -62,5 +60,6 @@ class JsonCommand {
 
   JsonCommand({this.field});
 
-  JsonCommand.fromJson(Map<String, dynamic> json) : this(field: json['field']);
+  JsonCommand.fromJson(Map<String, dynamic>? json)
+      : this(field: json?['field']);
 }
