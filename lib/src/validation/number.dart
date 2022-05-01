@@ -11,7 +11,7 @@ const NumberValidator<double> decimal =
 const NumberValidator<num> number =
     NumberValidator._(num.tryParse, _createNumberError);
 
-class NumberValidator<N extends num> extends PropertyValidator {
+class NumberValidator<N extends num> extends Validator {
   final N? Function(String) _parser;
   final NumberError Function(String, dynamic) _errorBuilder;
 

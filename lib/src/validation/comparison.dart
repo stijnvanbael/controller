@@ -3,7 +3,7 @@ import '../../controller.dart';
 var _minimum = 'minimum';
 var _maximum = 'maximum';
 
-class Min<C extends Comparable> extends PropertyValidator {
+class Min<C extends Comparable> extends Validator {
   final Expression<C>? _expression;
   final C? _value;
   final bool inclusive;
@@ -36,7 +36,7 @@ class Min<C extends Comparable> extends PropertyValidator {
   }
 }
 
-class Max<C extends Comparable> extends PropertyValidator {
+class Max<C extends Comparable> extends Validator {
   final Expression<C>? _expression;
   final C? _value;
   final bool inclusive;

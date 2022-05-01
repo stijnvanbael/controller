@@ -1,6 +1,6 @@
 import 'common.dart';
 
-class Length extends PropertyValidator {
+class Length extends Validator {
   final int min;
   final int? max;
 

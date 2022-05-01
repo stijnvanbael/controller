@@ -13,3 +13,4 @@ export 'src/validation/number.dart';
 export 'src/validation/regex.dart';
 export 'src/validation/required.dart';
 export 'src/validation/unique.dart';
+export 'src/validation/when.dart';

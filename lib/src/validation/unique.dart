@@ -4,7 +4,7 @@ import '../../controller.dart';
 
 typedef ExistsPredicate<T> = FutureOr<bool> Function(T);
 
-class Unique<T> extends PropertyValidator {
+class Unique<T> extends Validator {
   final ExistsPredicate<T> existsPredicate;
 
   const Unique(this.existsPredicate);
