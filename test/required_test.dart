@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:controller/controller.dart';
 import 'package:shelf/shelf.dart';
 import 'package:test/test.dart';
 
-part 'required.g.dart';
+part 'required_test.g.dart';
 
 void main() {
   group('Required body property', () {

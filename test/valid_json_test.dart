@@ -2,7 +2,7 @@ import 'package:controller/controller.dart';
 import 'package:shelf/shelf.dart';
 import 'package:test/test.dart';
 
-part 'valid_json.g.dart';
+part 'valid_json_test.g.dart';
 
 void main() {
   group('JSON controller body', () {

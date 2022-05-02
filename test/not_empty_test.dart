@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 import 'package:controller/controller.dart';
 import 'package:controller/src/validation/not_empty.dart';
 import 'package:shelf/shelf.dart';
 import 'package:test/test.dart';
 
-part 'not_empty.g.dart';
+part 'not_empty_test.g.dart';
 
 void main() {
   group('Non empty body property', () {

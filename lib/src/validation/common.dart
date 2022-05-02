@@ -74,13 +74,14 @@ class PropertyValidator extends CompositeValidator {
 
   @override
   FutureOr<List<ValidationError>> validateJson(dynamic document,
-          [String? parentProperty, dynamic jsonValue]) =>
-      super.validateJson(
-          document,
-          parentProperty != null
-              ? '$parentProperty.$propertyName'
-              : propertyName,
-          document?[propertyName]);
+      [String? parentProperty, dynamic jsonValue]) {
+    var name =
+        parentProperty != null ? '$parentProperty.$propertyName' : propertyName;
+    if (document != null && !(document is Map)) {
+      return [ObjectError(name)];
+    }
+    return super.validateJson(document, name, document?[propertyName]);
+  }
 }
 
 class EntityValidator extends Validator {
@@ -135,4 +136,20 @@ class ValidationError {
 
   @override
   String toString() => key;
+}
+
+class ObjectError extends ValidationError {
+  final String propertyName;
+
+  ObjectError(this.propertyName) : super('object');
+
+  @override
+  String toString() => 'The value for $propertyName must be an object.';
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'key': key,
+        'propertyName': propertyName,
+        'message': toString(),
+      };
 }

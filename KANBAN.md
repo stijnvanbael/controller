@@ -1,10 +1,9 @@
 In progress
 -----------
- * [ ] Validation in collections
+ * [ ] Polymorphic validation
 
 Backlog
 -------
- * [ ] Polymorphic validation
  * [ ] Readme and example
  * [ ] More test coverage
  * [ ] Separate builder for method validation
@@ -14,6 +13,7 @@ Backlog
  
 Done
 ----
+ * [x] Validation in iterables
  * [x] Implicit validation for valid JSON
  * [x] Basic security
  * [x] Implicit validation
