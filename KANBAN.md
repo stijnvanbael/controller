@@ -1,10 +1,9 @@
 In progress
 -----------
- * [ ] Polymorphic validation
 
 Backlog
 -------
- * [ ] Readme and example
+ * [ ] Polymorphic validation
  * [ ] More test coverage
  * [ ] Separate builder for method validation
  * [ ] Reuse validation code between methods and entities
@@ -13,6 +12,7 @@ Backlog
  
 Done
 ----
+ * [x] Readme and example
  * [x] Validation in iterables
  * [x] Implicit validation for valid JSON
  * [x] Basic security
