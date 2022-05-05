@@ -8,10 +8,10 @@ Backlog
  * [ ] Separate builder for method validation
  * [ ] Reuse validation code between methods and entities
  * [ ] Toggle CORS (+ override per request)
- * [ ] Use json_annotation to generate fromJson
  
 Done
 ----
+ * [x] Use json_annotation to generate fromJson
  * [x] Readme and example
  * [x] Validation in iterables
  * [x] Implicit validation for valid JSON
