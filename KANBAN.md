@@ -1,11 +1,11 @@
 In progress
 -----------
+ * [ ] Separate builder for method validation
 
 Backlog
 -------
  * [ ] Polymorphic validation
  * [ ] More test coverage
- * [ ] Separate builder for method validation
  * [ ] Reuse validation code between methods and entities
  * [ ] Toggle CORS (+ override per request)
  
