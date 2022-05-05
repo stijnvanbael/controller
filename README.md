@@ -15,10 +15,12 @@ Add the Controller libraries to pubspec.yaml:
 ```yaml
 dependencies:
   controller: ^0.1.4
+  json_annotation: ^4.5.0
 
 dev_dependencies:
   build_runner: ^2.1.10
   controller_generator: ^0.1.4
+  json_serializable: ^6.2.0
 ```
 
 ## Usage
@@ -54,10 +56,12 @@ class TodoController {
 
 ```dart
 import 'package:controller/controller.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'todo.g.dart';
 
 @validatable
+@JsonSerializable()
 class Todo {
   @notEmpty
   final String id;
@@ -69,10 +73,7 @@ class Todo {
     required this.description,
   });
 
-  Todo.fromJson(Map<String, dynamic> json) : this(
-    id: json['id'],
-    description: json['description'],
-  );
+  factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
 }
 ```
 

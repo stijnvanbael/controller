@@ -1,4 +1,5 @@
 import 'package:controller/controller.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:shelf/shelf.dart';
 import 'package:test/test.dart';
 
@@ -50,16 +51,17 @@ void main() {
 @controller
 class JsonController {
   @Post('/json')
-  Future<Response> requiredBody(@body JsonCommand command) =>
+  Future<Response> requiredBody(@body JsonCommand? command) =>
       Future.value(Response.ok('OK'));
 }
 
 @validatable
+@JsonSerializable()
 class JsonCommand {
   final String? field;
 
   JsonCommand({this.field});
 
-  JsonCommand.fromJson(Map<String, dynamic>? json)
-      : this(field: json?['field']);
+  factory JsonCommand.fromJson(Map<String, dynamic> json) =>
+      _$JsonCommandFromJson(json);
 }

@@ -1,5 +1,6 @@
 import 'package:controller/controller.dart';
 import 'package:controller/src/validation/not_empty.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:shelf/shelf.dart';
 import 'package:test/test.dart';
 
@@ -69,7 +70,6 @@ void main() {
       expect(response.statusCode, 200);
     });
 
-
     test('should fail when header is empty', () async {
       var response = await requestDispatcher(Request(
         'POST',
@@ -99,12 +99,13 @@ class NotEmptyController {
 }
 
 @validatable
+@JsonSerializable()
 class CommandWithNotEmpty {
   @notEmpty
   final String? notEmptyField;
 
   CommandWithNotEmpty({this.notEmptyField});
 
-  CommandWithNotEmpty.fromJson(Map<String, dynamic> json)
-      : this(notEmptyField: json['notEmptyField']);
+  factory CommandWithNotEmpty.fromJson(Map<String, dynamic> json) =>
+      _$CommandWithNotEmptyFromJson(json);
 }

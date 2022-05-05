@@ -1,4 +1,5 @@
 import 'package:controller/controller.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:shelf/shelf.dart';
 import 'package:test/test.dart';
 
@@ -110,28 +111,24 @@ class NestedValidationController {
 }
 
 @validatable
+@JsonSerializable()
 class NestedCommand {
   final Set<SubCommand> nestedSet;
   final List<SubCommand> nestedList;
 
   NestedCommand(this.nestedSet, this.nestedList);
 
-  NestedCommand.fromJson(Map<String, dynamic> json)
-      : this(
-          (json['nestedSet'] as List<dynamic>)
-              .map((value) => SubCommand.fromJson(value))
-              .toSet(),
-          (json['nestedList'] as List<dynamic>)
-              .map((value) => SubCommand.fromJson(value))
-              .toList(),
-        );
+  factory NestedCommand.fromJson(Map<String, dynamic> json) =>
+      _$NestedCommandFromJson(json);
 }
 
 @validatable
+@JsonSerializable()
 class SubCommand {
   final String value;
 
   SubCommand(this.value);
 
-  SubCommand.fromJson(Map<String, dynamic> json) : this(json['value']);
+  factory SubCommand.fromJson(Map<String, dynamic> json) =>
+      _$SubCommandFromJson(json);
 }

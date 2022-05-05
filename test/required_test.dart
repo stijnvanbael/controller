@@ -1,4 +1,5 @@
 import 'package:controller/controller.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:shelf/shelf.dart';
 import 'package:test/test.dart';
 
@@ -70,6 +71,7 @@ class RequiredController {
 }
 
 @validatable
+@JsonSerializable()
 class CommandWithRequired {
   final String requiredField;
   final String? optionalField;
@@ -81,17 +83,12 @@ class CommandWithRequired {
     this.nestedField,
   });
 
-  CommandWithRequired.fromJson(Map<String, dynamic> json)
-      : this(
-          requiredField: json['requiredField'],
-          optionalField: json['optionalField'],
-          nestedField: json['nestedField'] != null
-              ? NestedWithRequired.fromJson(json['nestedField'])
-              : null,
-        );
+  factory CommandWithRequired.fromJson(Map<String, dynamic> json) =>
+      _$CommandWithRequiredFromJson(json);
 }
 
 @validatable
+@JsonSerializable()
 class NestedWithRequired {
   final String requiredField;
   final String? optionalField;
@@ -101,9 +98,6 @@ class NestedWithRequired {
     this.optionalField,
   });
 
-  NestedWithRequired.fromJson(Map<String, dynamic> json)
-      : this(
-          requiredField: json['requiredField'],
-          optionalField: json['optionalField'],
-        );
+  factory NestedWithRequired.fromJson(Map<String, dynamic> json) =>
+      _$NestedWithRequiredFromJson(json);
 }
