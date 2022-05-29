@@ -1,3 +1,6 @@
-## 1.0.0
+## 0.1.4
 
-- Initial version, created by Stagehand
+* Use json_annotation to generate fromJson
+* Readme and example
+* Validation in iterables
+* Implicit validation for valid JSON
