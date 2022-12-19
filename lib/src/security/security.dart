@@ -1,3 +1,5 @@
+import 'package:controller/src/meta.dart';
+
 abstract class Security {
-  bool verify(Map<String, String> headers, List<String> requiredClaims);
+  Future<bool> verify(Map<String, String> headers, Secured secured);
 }

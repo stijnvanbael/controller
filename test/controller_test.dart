@@ -9,8 +9,9 @@ part 'controller_test.g.dart';
 void main() {
   group('Controller', () {
     var controller = TestController();
-    var dispatcher =
-        createRequestDispatcher([TestController$DispatcherBuilder(controller)]);
+    var security = TestSecurity();
+    var dispatcher = createRequestDispatcher(
+        [TestController$DispatcherBuilder(controller, security)]);
 
     test('Simple request', () async {
       var request = Request('GET', Uri.parse('http://test/simple'));
@@ -31,7 +32,29 @@ void main() {
       var response = await dispatcher(request);
       expect(response.statusCode, 400);
     });
+
+    test('Security authorized', () async {
+      security.result = true;
+      var request = Request('GET', Uri.parse('http://test/secured'));
+      var response = await dispatcher(request);
+      expect(response.statusCode, 200);
+    });
+
+    test('Security unauthorized', () async {
+      security.result = false;
+      var request = Request('GET', Uri.parse('http://test/secured'));
+      var response = await dispatcher(request);
+      expect(response.statusCode, 401);
+    });
   });
+}
+
+class TestSecurity implements Security {
+  bool result = true;
+
+  @override
+  Future<bool> verify(Map<String, String> headers, Secured secured) async =>
+      result;
 }
 
 Future<String> bodyOf(Response response) {
@@ -51,5 +74,11 @@ class TestController {
     int variable2,
   ) async {
     return Response.ok('variable1: $variable1, variable2: $variable2');
+  }
+
+  @Secured(HasClaim('role', 'admin'))
+  @Get('/secured')
+  Future<Response> secured() async {
+    return Response.ok('');
   }
 }

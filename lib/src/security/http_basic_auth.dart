@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:controller/src/security/security.dart';
 
+import '../meta.dart';
+
 class HttpBasicAuthSecurity implements Security {
   static final String authorization_header = 'authorization';
   static final String prefix = 'Basic ';
@@ -11,7 +13,7 @@ class HttpBasicAuthSecurity implements Security {
   HttpBasicAuthSecurity(this.identityProvider);
 
   @override
-  bool verify(Map<String, String> headers, List<String> requiredClaims) {
+  Future<bool> verify(Map<String, String> headers, Secured secured) async {
     var authorization = headers[authorization_header];
     if (authorization == null) {
       return false;
@@ -28,12 +30,12 @@ class HttpBasicAuthSecurity implements Security {
     if (claims == null) {
       return false;
     }
-    return requiredClaims.every((claim) => claims.contains(claim));
+    return secured.condition.evaluate(claims, headers);
   }
 }
 
 abstract class IdentityProvider {
-  List<String>? getClaims(String username, String password);
+  Map<String, String>? getClaims(String username, String password);
 }
 
 class SimpleIdentityProvider implements IdentityProvider {
@@ -42,15 +44,15 @@ class SimpleIdentityProvider implements IdentityProvider {
   SimpleIdentityProvider(this._identities);
 
   @override
-  List<String>? getClaims(String username, String password) {
+  Map<String, String>? getClaims(String username, String password) {
     var identity = _identities[username];
-    return identity?.password == password ? identity?.claims.toList() : null;
+    return identity?.password == password ? identity?.claims : null;
   }
 }
 
 class SimpleIdentity {
   String password;
-  List<String> claims;
+  Map<String, String> claims;
 
-  SimpleIdentity(this.password, [this.claims = const []]);
+  SimpleIdentity(this.password, [this.claims = const {}]);
 }
