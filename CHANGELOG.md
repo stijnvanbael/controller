@@ -1,3 +1,7 @@
+## 0.1.6
+
+* Added support for OpenID Connect tokens
+
 ## 0.1.5
 
 * Update to Dart 2.14 
