@@ -8,8 +8,7 @@ import 'package:shelf/shelf.dart';
 import 'pattern_matcher.dart';
 import 'uri_pattern.dart';
 
-const corsHeaders = {
-  'access-control-allow-origin': '*',
+final corsHeaders = {
   'access-control-allow-methods': 'GET, PUT, POST, DELETE, HEAD, PATCH',
   'access-control-allow-headers': '*',
 };
@@ -43,16 +42,30 @@ Response defaultHandler(Request request) => Response.notFound('');
 RequestDispatcher createRequestDispatcher(
   List<DispatcherBuilder> dispatcherBuilders, {
   bool corsEnabled = false,
+  String allowedOrigins = '',
   Handler defaultHandler = defaultHandler,
 }) {
   var requestMatcher = asyncMatcher<Request, Response>();
   if (corsEnabled) {
-    requestMatcher = requestMatcher.addCorsHeaders();
+    if (allowedOrigins.isEmpty) {
+      throw StateError(
+          'CORS is enabled, but no allowed origins are specified.');
+    }
+    requestMatcher = requestMatcher.addCorsHandler();
   }
   dispatcherBuilders.forEach(
       (element) => requestMatcher = requestMatcher.appendMatchers(element));
-  return (request) async =>
-      await requestMatcher.otherwise(defaultHandler)(request);
+  return (request) async {
+    var response = await requestMatcher.otherwise(defaultHandler)(request);
+    if (corsEnabled) {
+      return response.change(headers: {
+        ...response.headers,
+        ...corsHeaders,
+        'access-control-allow-origin': allowedOrigins
+      });
+    }
+    return response;
+  };
 }
 
 TransformingPredicate<Request, Future<Pair<Map<String, String>, String>>>
@@ -92,9 +105,8 @@ extension RequestMatcher on AsyncPatternMatcher<Request, Response> {
           DispatcherBuilder dispatcherBuilder) =>
       dispatcherBuilder.appendMatchers(this);
 
-  AsyncPatternMatcher<Request, Response> addCorsHeaders() => when2(
+  AsyncPatternMatcher<Request, Response> addCorsHandler() => when2(
         matchRequest('OPTIONS', '/**'),
-        (Map<String, String> headers, body) =>
-            Response.ok(null, headers: corsHeaders),
+        (Map<String, String> headers, body) => Response.ok(''),
       );
 }
