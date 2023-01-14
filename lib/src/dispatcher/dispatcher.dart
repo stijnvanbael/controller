@@ -26,6 +26,24 @@ abstract class DispatcherBuilder {
       body: jsonEncode({'errors': errors}),
       headers: {HttpHeaders.contentTypeHeader: ContentType.json.toString()});
 
+  Response toResponse(dynamic value) {
+    if (value is Response) {
+      return value;
+    } else if (value is String) {
+      return Response.ok(value);
+    } else if (value == null) {
+      return Response.ok('');
+    } else if (value.toJson != null) {
+      return Response.ok(
+        jsonEncode(value.toJson()),
+        headers: {HttpHeaders.contentTypeHeader: ContentType.json.toString()},
+      );
+    } else {
+      throw StateError('Cannot convert $value to a Response, '
+          'please return a Response instead.');
+    }
+  }
+
   dynamic decodeJson(String? json) {
     try {
       return json != null && json.isNotEmpty ? jsonDecode(json) : null;

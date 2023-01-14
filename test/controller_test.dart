@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:controller/controller.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:shelf/shelf.dart';
 import 'package:test/test.dart';
 
@@ -17,6 +18,24 @@ void main() {
       var request = Request('GET', Uri.parse('http://test/simple'));
       var response = await dispatcher(request);
       expect(response.statusCode, 200);
+    });
+
+    test('Auto-generate request', () async {
+      var request = Request('GET', Uri.parse('http://test/auto/simple'));
+      var response = await dispatcher(request);
+      expect(response.statusCode, 200);
+    });
+
+    test('Auto-generate JSON response', () async {
+      var request = Request('GET', Uri.parse('http://test/auto/json-response'));
+      var response = await dispatcher(request);
+      expect(response.statusCode, 200);
+      expect(
+          await bodyOf(response),
+          jsonEncode({
+            'variable1': 'value1',
+            'variable2': 2,
+          }));
     });
 
     test('Path variable mapping', () async {
@@ -68,6 +87,14 @@ class TestController {
     return Response.ok('');
   }
 
+  @Get('/auto/simple')
+  Future autoSimple() async {}
+
+  @Get('/auto/json-response')
+  Future<JsonResponse> autoJsonResponse() async {
+    return JsonResponse(variable1: 'value1', variable2: 2);
+  }
+
   @Get('/path/:variable1/:variable2')
   Future<Response> withPathVariables(
     String variable1,
@@ -81,4 +108,17 @@ class TestController {
   Future<Response> secured() async {
     return Response.ok('');
   }
+}
+
+@JsonSerializable(createFactory: false)
+class JsonResponse {
+  final String variable1;
+  final int variable2;
+
+  JsonResponse({
+    required this.variable1,
+    required this.variable2,
+  });
+
+  Map<String, dynamic> toJson() => _$JsonResponseToJson(this);
 }

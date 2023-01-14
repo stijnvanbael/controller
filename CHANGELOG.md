@@ -1,3 +1,7 @@
+## 0.1.8
+
+* Auto-generate JSON response
+
 ## 0.1.7
 
 * Added support for CORS headers
