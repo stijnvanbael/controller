@@ -13,4 +13,5 @@ build/
 doc/api/
 
 *.iml
+.idea/
 *.g.dart
