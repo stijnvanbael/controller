@@ -1,4 +1,5 @@
 name: controller
+homepage: https://github.com/stijnvanbael/controller
 description: Metadata-driven HTTP controllers in Dart
 version: 0.1.9
 
