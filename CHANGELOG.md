@@ -1,3 +1,8 @@
+## 0.1.9
+
+* Document all features in README.md
+* Migrate to Github
+
 ## 0.1.8
 
 * Auto-generate JSON response

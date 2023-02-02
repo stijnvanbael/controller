@@ -1,6 +1,6 @@
 name: controller
-description: Metadata-driven HTTP controllers without mirrors
-version: 0.1.8
+description: Metadata-driven HTTP controllers in Dart
+version: 0.1.9
 
 environment:
   sdk: '>=2.14.0 <3.0.0'
