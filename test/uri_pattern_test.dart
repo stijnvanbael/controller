@@ -2,7 +2,7 @@ import 'package:controller/src/dispatcher/uri_pattern.dart';
 import 'package:test/test.dart';
 
 void main() {
-  [
+  for (var testSet in [
     {
       'pattern': '/without-trailing-slash',
       'uri': '/with-trailing-slash/',
@@ -37,7 +37,7 @@ void main() {
     {'pattern': '', 'uri': '', 'matches': true},
     {'pattern': '/', 'uri': '', 'matches': true},
     {'pattern': '/', 'uri': '/', 'matches': true},
-  ].forEach((testSet) {
+  ]) {
     var pattern = testSet['pattern'] as String;
     var uri = testSet['uri'] as String;
     var matches = testSet['matches'] as bool;
@@ -46,5 +46,5 @@ void main() {
       var uriPattern = UriPattern(pattern);
       expect(uriPattern.matches(uri), matches);
     });
-  });
+  }
 }

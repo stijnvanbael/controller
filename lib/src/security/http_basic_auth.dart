@@ -4,8 +4,15 @@ import 'package:controller/src/security/security.dart';
 
 import '../meta.dart';
 
+/// HTTP basic authentication security that will read username and password
+/// from the Authorization header.
+///
+/// The identity provider will be used to validate the username/password
+/// combination and fetch the claims of the client.
+///
+/// See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
 class HttpBasicAuthSecurity implements Security {
-  static final String authorization_header = 'authorization';
+  static final String authorizationHeader = 'authorization';
   static final String prefix = 'Basic ';
   static final Codec<String, String> decoder = utf8.fuse(base64);
   final IdentityProvider identityProvider;
@@ -14,7 +21,7 @@ class HttpBasicAuthSecurity implements Security {
 
   @override
   Future<bool> verify(Map<String, String> headers, Secured secured) async {
-    var authorization = headers[authorization_header];
+    var authorization = headers[authorizationHeader];
     if (authorization == null) {
       return false;
     }
@@ -34,10 +41,16 @@ class HttpBasicAuthSecurity implements Security {
   }
 }
 
+/// Provides identity information for clients
 abstract class IdentityProvider {
+  /// Validates the username/password combination is valid
+  /// and returns the claims of the client.
+  /// Returns null when the username does not exist or the password is
+  /// incorrect.
   Map<String, String>? getClaims(String username, String password);
 }
 
+/// Simple identity provider that stores identities in a map in memory.
 class SimpleIdentityProvider implements IdentityProvider {
   final Map<String, SimpleIdentity> _identities;
 

@@ -1,5 +1,7 @@
 import 'common.dart';
 
+/// Annotate a request parameter or the property of a request body
+/// to validate its length is within the specified range.
 class Length extends Validator {
   final int min;
   final int? max;

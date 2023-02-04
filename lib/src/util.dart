@@ -1,3 +1,4 @@
+/// attempts to convert any value to the type T
 T? convert<T>(dynamic value) {
   if (value is T) {
     return value;

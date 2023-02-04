@@ -26,7 +26,7 @@ class ValidJson extends Validator {
 
   @override
   FutureOr<List<ValidationError>> validateJson(
-      entity, String propertyName, dynamic jsonValue) {
+      document, String propertyName, dynamic jsonValue) {
     return [];
   }
 }

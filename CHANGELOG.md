@@ -1,3 +1,7 @@
+## 0.1.10
+
+* API docs
+
 ## 0.1.9
 
 * Document all features in README.md

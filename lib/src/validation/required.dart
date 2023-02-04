@@ -21,7 +21,7 @@ class Required extends Validator {
 
   @override
   FutureOr<List<ValidationError>> validateJson(
-      entity, String propertyName, dynamic jsonValue) {
+      document, String propertyName, dynamic jsonValue) {
     if (jsonValue == null) {
       return [RequiredError(propertyName)];
     }

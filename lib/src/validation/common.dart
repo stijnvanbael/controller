@@ -5,33 +5,50 @@ typedef Expression<C> = C Function(dynamic entity);
 
 const validatable = Validatable();
 
+/// Annotate a class to enable validation checks on it
 class Validatable {
   const Validatable();
 }
 
+/// Annotate a request parameter or the property of a request body
+/// to validate it.
 abstract class Validator {
   const Validator();
 
-  FutureOr<List<ValidationError>> validateProperty(
-      dynamic entity, String propertyName, dynamic propertyValue);
+  /// Validates the property of a class.
+  /// Returns validation errors when the property is not valid according
+  /// to this validator.
+  /// entity is the enclosing object being validated.
+  FutureOr<List<ValidationError>> validateProperty(dynamic entity,
+      String propertyName, dynamic propertyValue);
 
-  FutureOr<List<ValidationError>> validateJson(
-          dynamic document, String propertyName, dynamic jsonValue) =>
+  /// Validates the field of a JSON object.
+  /// Returns validation errors when the property is not valid according
+  /// to this validator.
+  /// document is the enclosing JSON object being validated.
+  FutureOr<List<ValidationError>> validateJson(dynamic document,
+      String propertyName, dynamic jsonValue) =>
       [];
 
-  FutureOr<List<ValidationError>> validate(
-          String propertyName, dynamic propertyValue) =>
+  /// Validates a request parameter or the entiry body of a request.
+  /// Returns validation errors when the property is not valid according
+  /// to this validator.
+  /// entity is the enclosing object being validated.
+  FutureOr<List<ValidationError>> validate(String propertyName,
+      dynamic propertyValue) =>
       validateProperty(null, propertyName, propertyValue);
 }
 
+/// Verifies all validators supplied via the constructor and aggregates
+/// all validation errors.
 class CompositeValidator extends Validator {
   final List<Validator> validators;
 
   const CompositeValidator(this.validators);
 
   @override
-  FutureOr<List<ValidationError>> validateProperty(
-      dynamic entity, String propertyName, propertyValue) async {
+  FutureOr<List<ValidationError>> validateProperty(dynamic entity,
+      String propertyName, propertyValue) async {
     var errors = <ValidationError>[];
     for (var validator in validators) {
       errors.addAll(await validator.validateProperty(
@@ -41,57 +58,56 @@ class CompositeValidator extends Validator {
   }
 
   @override
-  FutureOr<List<ValidationError>> validateJson(
-      dynamic entity, String propertyName, jsonValue) async {
+  FutureOr<List<ValidationError>> validateJson(dynamic document,
+      String propertyName, jsonValue) async {
     var errors = <ValidationError>[];
     for (var validator in validators) {
       errors.addAll(
-          await validator.validateJson(entity, propertyName, jsonValue));
+          await validator.validateJson(document, propertyName, jsonValue));
     }
     return errors;
   }
 }
 
+/// Validates the property of a class with all validators specified in the
+/// constructor.
 class PropertyValidator extends CompositeValidator {
-  final String propertyName;
+  final String name;
   final PropertyGetter propertyGetter;
 
-  PropertyValidator(
-    this.propertyName,
-    List<Validator> validators,
-    this.propertyGetter,
-  ) : super(validators);
+  PropertyValidator(this.name,
+      List<Validator> validators,
+      this.propertyGetter,) : super(validators);
 
   @override
   FutureOr<List<ValidationError>> validateProperty(dynamic entity,
-          [String? parentProperty, dynamic propertyValue]) =>
+      [String? propertyName, dynamic propertyValue]) =>
       super.validateProperty(
           entity,
-          parentProperty != null
-              ? '$parentProperty.$propertyName'
-              : propertyName,
+          propertyName != null ? '$propertyName.$name' : name,
           propertyGetter(entity));
 
   @override
   FutureOr<List<ValidationError>> validateJson(dynamic document,
-      [String? parentProperty, dynamic jsonValue]) {
-    var name =
-        parentProperty != null ? '$parentProperty.$propertyName' : propertyName;
-    if (document != null && !(document is Map)) {
-      return [ObjectError(name)];
+      [String? propertyName, dynamic jsonValue]) {
+    final childName = propertyName != null ? '$propertyName.$name' : name;
+    if (document != null && document is! Map) {
+      return [ObjectError(childName)];
     }
-    return super.validateJson(document, name, document?[propertyName]);
+    return super.validateJson(document, childName, document?[name]);
   }
 }
 
+/// Validates the properties of an object with the property validators
+/// specified in the constructor.
 class EntityValidator extends Validator {
   final List<PropertyValidator> propertyValidators;
 
   EntityValidator(this.propertyValidators);
 
   @override
-  FutureOr<List<ValidationError>> validateProperty(
-      dynamic entity, String propertyName, dynamic propertyValue) async {
+  FutureOr<List<ValidationError>> validateProperty(dynamic entity,
+      String propertyName, dynamic propertyValue) async {
     var errors = <ValidationError>[];
     for (var validator in propertyValidators) {
       errors.addAll(
@@ -109,8 +125,8 @@ class EntityValidator extends Validator {
   }
 
   @override
-  FutureOr<List<ValidationError>> validateJson(
-      dynamic entity, String propertyName, dynamic jsonValue) async {
+  FutureOr<List<ValidationError>> validateJson(dynamic document,
+      String propertyName, dynamic jsonValue) async {
     var errors = <ValidationError>[];
     for (var validator in propertyValidators) {
       errors.addAll(await validator.validateJson(jsonValue, propertyName));
@@ -127,7 +143,9 @@ class EntityValidator extends Validator {
   }
 }
 
+/// An error created by a validator for an invalid value.
 class ValidationError {
+  /// Identifies the validator that produced this validation error
   final String key;
 
   ValidationError(this.key);
@@ -147,7 +165,8 @@ class ObjectError extends ValidationError {
   String toString() => 'The value for $propertyName must be an object.';
 
   @override
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         'key': key,
         'propertyName': propertyName,
         'message': toString(),

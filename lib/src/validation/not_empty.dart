@@ -20,7 +20,7 @@ class NotEmpty extends Validator {
 
   @override
   FutureOr<List<ValidationError>> validateJson(
-      entity, String propertyName, dynamic jsonValue) {
+      document, String propertyName, dynamic jsonValue) {
     if (jsonValue != null && (jsonValue is String && jsonValue.isEmpty)) {
       return [NotEmptyError(propertyName)];
     }

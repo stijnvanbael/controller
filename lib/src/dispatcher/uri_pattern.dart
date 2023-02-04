@@ -18,9 +18,9 @@ class UriPattern {
       return null;
     }
     var result = <String, String>{};
-    _parameters.forEach((param) {
+    for (var param in _parameters) {
       result[param] = match[_parameters.indexOf(param) + 1]!;
-    });
+    }
     return result;
   }
 

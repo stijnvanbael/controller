@@ -3,17 +3,20 @@ import '../../controller.dart';
 var _minimum = 'minimum';
 var _maximum = 'maximum';
 
+/// Annotate a request parameter or the property of a request body
+/// to validate its value is greater than or equal to the specified
+/// value or expression.
 class Min<C extends Comparable> extends Validator {
-  final Expression<C>? _expression;
-  final C? _value;
+  final Expression<C>? expression;
+  final C? value;
   final bool inclusive;
 
-  const Min.expression(this._expression, {this.inclusive = true})
-      : _value = null;
+  /// Use an expression to calculate the value instead
+  const Min.expression(this.expression, {this.inclusive = true}) : value = null;
 
-  const Min(this._value, {this.inclusive = true}) : _expression = null;
+  const Min(this.value, {this.inclusive = true}) : expression = null;
 
-  C _evaluate(dynamic entity) => _value ?? _expression! (entity);
+  C _evaluate(dynamic entity) => value ?? expression!(entity);
 
   @override
   List<ValidationError> validateProperty(
@@ -36,17 +39,20 @@ class Min<C extends Comparable> extends Validator {
   }
 }
 
+/// Annotate a request parameter or the property of a request body
+/// to validate its value is less than or equal to the specified
+/// value or expression.
 class Max<C extends Comparable> extends Validator {
-  final Expression<C>? _expression;
-  final C? _value;
+  final Expression<C>? expression;
+  final C? value;
   final bool inclusive;
 
-  const Max.expression(this._expression, {this.inclusive = true})
-      : _value = null;
+  /// Use an expression to calculate the value instead
+  const Max.expression(this.expression, {this.inclusive = true}) : value = null;
 
-  const Max(this._value, {this.inclusive = true}) : _expression = null;
+  const Max(this.value, {this.inclusive = true}) : expression = null;
 
-  C _evaluate(dynamic entity) => _value ?? _expression! (entity);
+  C _evaluate(dynamic entity) => value ?? expression!(entity);
 
   @override
   List<ValidationError> validateProperty(

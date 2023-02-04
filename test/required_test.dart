@@ -71,7 +71,7 @@ class RequiredController {
 }
 
 @validatable
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class CommandWithRequired {
   final String requiredField;
   final String? optionalField;
@@ -88,7 +88,7 @@ class CommandWithRequired {
 }
 
 @validatable
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class NestedWithRequired {
   final String requiredField;
   final String? optionalField;

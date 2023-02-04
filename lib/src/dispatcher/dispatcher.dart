@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:controller/controller.dart';
 import 'package:shelf/shelf.dart';
 
-import 'pattern_matcher.dart';
 import 'uri_pattern.dart';
 
 final corsHeaders = {
@@ -71,8 +70,9 @@ RequestDispatcher createRequestDispatcher(
     }
     requestMatcher = requestMatcher.addCorsHandler();
   }
-  dispatcherBuilders.forEach(
-      (element) => requestMatcher = requestMatcher.appendMatchers(element));
+  for (var element in dispatcherBuilders) {
+    requestMatcher = requestMatcher.appendMatchers(element);
+  }
   return (request) async {
     var response = await requestMatcher.otherwise(defaultHandler)(request);
     if (corsEnabled) {

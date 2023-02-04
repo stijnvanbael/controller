@@ -56,7 +56,7 @@ class JsonController {
 }
 
 @validatable
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class JsonCommand {
   final String? field;
 

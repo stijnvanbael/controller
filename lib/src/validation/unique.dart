@@ -4,7 +4,10 @@ import '../../controller.dart';
 
 typedef ExistsPredicate<T> = FutureOr<bool> Function(T);
 
+/// Annotate a request parameter or the property of a request body
+/// to validate its value is unique.
 class Unique<T> extends Validator {
+  /// A predicate used to check whether the value already exists
   final ExistsPredicate<T> existsPredicate;
 
   const Unique(this.existsPredicate);

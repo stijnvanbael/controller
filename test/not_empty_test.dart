@@ -99,7 +99,7 @@ class NotEmptyController {
 }
 
 @validatable
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class CommandWithNotEmpty {
   @notEmpty
   final String? notEmptyField;

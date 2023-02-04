@@ -4,6 +4,13 @@ import 'package:controller/controller.dart';
 import 'package:logging/logging.dart';
 import 'package:openid_client/openid_client.dart';
 
+/// JSON web token authentication security that validates JWT tokens
+/// and extracts the client claims from it.
+///
+/// The issuer URI and client ID are used to verify the JWT token are
+/// authentic.
+///
+/// See https://jwt.io/
 class JwtSecurity implements Security {
   static final Logger _log = Logger('JwtSecurity');
   final Uri issuerUri;

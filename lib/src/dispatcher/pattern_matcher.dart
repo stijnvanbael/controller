@@ -14,7 +14,7 @@ TransformingPredicate<I, T> predicate<I, T>(
 
 T identity<T>(dynamic input) => input as T;
 
-class PatternMatcher<I, O> implements Function {
+class PatternMatcher<I, O> {
   final List<_Case<I, dynamic, O>> _cases;
 
   PatternMatcher(this._cases);
@@ -57,7 +57,7 @@ class PatternMatcher<I, O> implements Function {
   }
 }
 
-class ClosedPatternMatcher<I, O> implements Function {
+class ClosedPatternMatcher<I, O> {
   final List<_Case<I, dynamic, O>> _cases;
 
   ClosedPatternMatcher(this._cases);
@@ -74,7 +74,7 @@ class ClosedPatternMatcher<I, O> implements Function {
   }
 }
 
-class AsyncPatternMatcher<I, O> implements Function {
+class AsyncPatternMatcher<I, O> {
   final List<_Case<I, dynamic, Future<O>>> _cases;
 
   AsyncPatternMatcher(this._cases);
@@ -129,7 +129,7 @@ class AsyncPatternMatcher<I, O> implements Function {
   }
 }
 
-class ClosedAsyncPatternMatcher<I, O> implements Function {
+class ClosedAsyncPatternMatcher<I, O> {
   final List<_Case<I, dynamic, Future<O>>> _cases;
 
   ClosedAsyncPatternMatcher(this._cases);

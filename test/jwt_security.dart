@@ -1,5 +1,4 @@
 import 'package:controller/controller.dart';
-import 'package:controller/src/security/jwt_security.dart';
 import 'package:logging/logging.dart';
 import 'package:openid_client/openid_client.dart';
 import 'package:test/test.dart';

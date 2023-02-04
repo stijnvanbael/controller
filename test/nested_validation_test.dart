@@ -111,7 +111,7 @@ class NestedValidationController {
 }
 
 @validatable
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class NestedCommand {
   final Set<SubCommand> nestedSet;
   final List<SubCommand> nestedList;
@@ -123,7 +123,7 @@ class NestedCommand {
 }
 
 @validatable
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class SubCommand {
   final String value;
 
