@@ -1,3 +1,7 @@
+## 0.1.10+1
+
+* Fixed issue with removed BodyProperty
+
 ## 0.1.10
 
 * API docs
