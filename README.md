@@ -10,17 +10,17 @@ Controller is a library that facilitates writing HTTP request handlers with Shel
 
 ## Getting started
 
-Add the Controller libraries to pubspec.yaml:
+Add the `controller` libraries to `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  controller: ^0.1.4
-  json_annotation: ^4.5.0
+  controller: ^0.1.10+1
+  json_annotation: ^4.8.0
 
 dev_dependencies:
-  build_runner: ^2.1.10
-  controller_generator: ^0.1.4
-  json_serializable: ^6.2.0
+  build_runner: ^2.3.3
+  controller_generator: ^0.1.8
+  json_serializable: ^6.6.1
 ```
 
 ## Usage
