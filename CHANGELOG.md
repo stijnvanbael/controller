@@ -1,3 +1,7 @@
+## 0.1.11
+
+* Do not validate synthetic properties
+
 ## 0.1.10+1
 
 * Fixed issue with removed BodyProperty

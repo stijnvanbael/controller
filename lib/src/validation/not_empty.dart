@@ -34,7 +34,7 @@ class NotEmptyError extends ValidationError {
   NotEmptyError(this.propertyName) : super('notEmpty');
 
   @override
-  String toString() => 'A value for $propertyName is cannot be empty.';
+  String toString() => 'A value for $propertyName cannot be empty.';
 
   @override
   Map<String, dynamic> toJson() => {

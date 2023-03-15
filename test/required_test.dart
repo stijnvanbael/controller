@@ -19,7 +19,7 @@ void main() {
 
     test('should fail when field is null', () async {
       var result =
-          await CommandWithRequired$Validator.instance.validateDocument(
+      await CommandWithRequired$Validator.instance.validateDocument(
         {
           'requiredField': null,
           'nestedField': {
@@ -82,6 +82,8 @@ class CommandWithRequired {
     this.optionalField,
     this.nestedField,
   });
+
+  String get syntheticField => requiredField;
 
   factory CommandWithRequired.fromJson(Map<String, dynamic> json) =>
       _$CommandWithRequiredFromJson(json);

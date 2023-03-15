@@ -35,7 +35,7 @@ class RequiredError extends ValidationError {
   RequiredError(this.propertyName) : super('required');
 
   @override
-  String toString() => 'A value for $propertyName is cannot be null.';
+  String toString() => 'A value for $propertyName cannot be null.';
 
   @override
   Map<String, dynamic> toJson() => {
