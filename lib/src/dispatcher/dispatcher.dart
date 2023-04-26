@@ -32,14 +32,28 @@ abstract class DispatcherBuilder {
       return Response.ok(value);
     } else if (value == null) {
       return Response.ok('');
-    } else if (value.toJson != null) {
+    } else {
       return Response.ok(
-        jsonEncode(value.toJson()),
+        jsonEncode(toJson(value)),
         headers: {HttpHeaders.contentTypeHeader: ContentType.json.toString()},
       );
+    }
+  }
+
+  toJson(dynamic value) {
+    if (value is String || value is num || value is bool) {
+      return value;
+    } else if (value is Iterable) {
+      return value.map((e) => toJson(e)).toList();
+    } else if (value is Map) {
+      return value.map((key, value) => MapEntry(key, toJson(value)));
     } else {
-      throw StateError('Cannot convert $value to a Response, '
-          'please return a Response instead.');
+      try {
+        return value.toJson();
+      } catch (e) {
+        throw StateError('Cannot convert $value to a Response, '
+            'please return a Response instead.');
+      }
     }
   }
 

@@ -1,3 +1,7 @@
+## 0.1.12
+
+* Support implicit Iterable and Map to JSON conversion in conventional response.
+
 ## 0.1.11
 
 * Do not validate synthetic properties
