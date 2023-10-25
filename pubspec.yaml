@@ -8,8 +8,8 @@ environment:
 
 dependencies:
   shelf: ^1.4.0
-  openid_client: ^0.4.7
-  jose: ^0.3.3
+  openid_client: ^0.4.8
+  jose: ^0.3.4
   logging: ^1.1.0
 
 dev_dependencies:
