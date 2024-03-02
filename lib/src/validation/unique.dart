@@ -38,7 +38,7 @@ class UniqueError extends ValidationError {
   Map<String, dynamic> toJson() => {
         'key': key,
         'propertyName': propertyName,
-        'propertyValue': propertyValue,
+        'propertyValue': propertyValue.toString(),
         'message': toString(),
       };
 }

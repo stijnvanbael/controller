@@ -33,6 +33,12 @@ void main() {
       'uri': '/without-leading-slash/',
       'matches': true
     },
+    {'pattern': 'path/with/:param', 'uri': '/path/with/value', 'matches': true},
+    {
+      'pattern': 'path/with/:param',
+      'uri': '/path/with/some-value',
+      'matches': true
+    },
     {'pattern': '', 'uri': '/', 'matches': true},
     {'pattern': '', 'uri': '', 'matches': true},
     {'pattern': '/', 'uri': '', 'matches': true},

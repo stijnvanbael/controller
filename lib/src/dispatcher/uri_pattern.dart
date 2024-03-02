@@ -5,7 +5,7 @@ class UriPattern {
 
   UriPattern(this.pattern) {
     if (pattern.contains('?')) {
-      throw 'Pattern "$pattern" shoud not contain query parameters';
+      throw 'Pattern "$pattern" should not contain query parameters';
     }
     _regExp = _createRegExp(pattern);
   }
@@ -26,7 +26,7 @@ class UriPattern {
 
   RegExp _createRegExp(String pattern) => RegExp(r'^' +
       _normalize(pattern).replaceAllMapped(
-          RegExp(r'(\*\*)|(:[\w]+)|([^:*]+)', caseSensitive: false), (Match m) {
+          RegExp(r'(\*\*)|(:\w+)|([^:*]+)', caseSensitive: false), (Match m) {
         var parameterName = m[2];
         var intermediate = m[3];
         if (parameterName != null) {
