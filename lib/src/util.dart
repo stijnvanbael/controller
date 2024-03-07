@@ -1,21 +1,19 @@
+import 'package:uuid/uuid.dart';
+
 /// attempts to convert any value to the type T
 T? convert<T>(dynamic value) {
   if (value is T) {
     return value;
   }
-  if (T == String) {
-    return value != null ? value.toString() as T : null;
-  } else if (T == int) {
-    return value != null ? int.tryParse(value.toString()) as T : null;
-  } else if (T == double) {
-    return value != null ? double.tryParse(value.toString()) as T : null;
-  } else if (T == num) {
-    return value != null ? num.tryParse(value.toString()) as T : null;
-  } else if (T == bool) {
-    return value != null ? (value.toString() == 'true') as T : null;
-  } else if (T == DateTime) {
-    return value != null ? DateTime.tryParse(value.toString()) as T : null;
-  } else {
-    throw 'Cannot convert $value to $T';
-  }
+  return switch (T) {
+    String => value != null ? value.toString() as T : null,
+    int => value != null ? int.tryParse(value.toString()) as T : null,
+    double => value != null ? double.tryParse(value.toString()) as T : null,
+    num => value != null ? num.tryParse(value.toString()) as T : null,
+    bool => value != null ? (value.toString() == 'true') as T : null,
+    DateTime => value != null ? DateTime.tryParse(value.toString()) as T : null,
+    UuidValue =>
+      value != null ? UuidValue.fromString(value.toString()) as T : null,
+    _ => throw 'Cannot convert $value to $T',
+  };
 }
